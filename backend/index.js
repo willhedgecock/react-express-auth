@@ -27,7 +27,7 @@ app.post('/login', async (req, res) => {
         );
 
         if (query.rows.length === 0) {
-            return res.status(401).json({ success: false, message: 'Invalid username or email address' });
+            return res.status(401).json({ success: false, message: 'User not found.' });
         }
 
         const user = query.rows[0];
@@ -36,9 +36,9 @@ app.post('/login', async (req, res) => {
         const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
         if (passwordMatch) {
-            res.json({ success: true, message: 'Login successful', user: { id: user.id, username: user.username, email: user.email } });
+            res.json({ success: true, message: 'Login successful'});
         } else {
-            res.status(401).json({ success: false, message: 'Invalid credentials' });
+            res.status(401).json({ success: false, message: 'Invalid credentials. Please try again.' });
         }
     } catch (err) {
         console.error(err);
